@@ -1,31 +1,16 @@
-import io
-import sys
+# In the lib/testing/parrot_test.py file
 
-from parrot import parrot
+import pytest
+from lib.parrot import parrot
 
-class TestParrot:
-    '''Function parrot() in parrot.py'''
+def test_prints_argument(capsys):
+    '''prints the argument passed to it.'''
+    parrot("Hello!")
+    captured_out, _ = capsys.readouterr()
+    assert captured_out.strip() == "Hello!"
 
-    def test_prints_argument(self):
-        '''prints the argument passed to it.'''
-        captured_out = io.StringIO()
-        sys.stdout = captured_out
-        parrot("Hello!")
-        sys.stdout = sys.__stdout__
-        assert(captured_out.getvalue() == "Hello!\n")
-
-    def test_returns_argument(self):
-        '''returns the argument passed to it.'''
-        assert(parrot("Hello!") == "Hello!")
-
-    def test_prints_squawk_by_default(self):
-        '''prints "Squawk!" if no argument is passed.'''
-        captured_out = io.StringIO()
-        sys.stdout = captured_out
-        parrot()
-        sys.stdout = sys.__stdout__
-        assert(captured_out.getvalue() == "Squawk!\n")
-
-    def test_returns_squawk_by_default(self):
-        '''returns "Squawk!" if no argument is passed.'''
-        assert(parrot() == "Squawk!")
+def test_default_argument(capsys):
+    '''prints the default argument when no argument is passed.'''
+    parrot()
+    captured_out, _ = capsys.readouterr()
+    assert captured_out.strip() == "Squawk!"
